@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_options(-Wall -Wextra -Werror -O3)
 
 include(FetchContent)
 
@@ -24,6 +23,14 @@ add_executable(${PROJECT_NAME}
     src/config.cpp
     src/common.cpp
     src/bot.cpp
+)
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -Wall
+    -Wextra
+    -O3
+    -Wpedantic
+    -pthread
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${asio_SOURCE_DIR}/asio/include)
