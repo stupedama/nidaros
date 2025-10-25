@@ -81,7 +81,7 @@ void Bot::join() const
 {
   for(const auto& c : channels)
   {
-    std::string join_cmd = "JOIN #" + c + "\r\n";
+    std::string join_cmd = "JOIN " + c + "\r\n";
     asio::write(socket, asio::buffer(join_cmd));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
