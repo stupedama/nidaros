@@ -10,13 +10,13 @@ Bot::~Bot()
 
 void Bot::run(std::atomic<bool>& connected) const
 {
-  boost::asio::streambuf buffer;
+  asio::streambuf buffer;
   std::istream is(&buffer);
 
   try {
     while(true)
     {
-      boost::asio::read_until(socket, buffer, "\r\n");
+      asio::read_until(socket, buffer, "\r\n");
 
       std::string line;
       std::getline(is, line);
@@ -30,7 +30,7 @@ void Bot::run(std::atomic<bool>& connected) const
       if(line.rfind("PING", 0) == 0)
       {
         std::string response{"PONG " + line.substr(5) + "\r\n"};
-        boost::asio::write(socket, boost::asio::buffer(response));
+        asio::write(socket, asio::buffer(response));
         std::cout << response << std::endl;
       }
 
@@ -52,13 +52,13 @@ void Bot::run(std::atomic<bool>& connected) const
 void Bot::set_nickname() const
 {
     std::string nick_cmd = "NICK " + nickname + "\r\n";
-    boost::asio::write(socket, boost::asio::buffer(nick_cmd));
+    asio::write(socket, asio::buffer(nick_cmd));
 }
 
 void Bot::set_ident() const
 {
     std::string user_cmd = "USER " + ident + " 0 * :" + name + "\r\n";
-    boost::asio::write(socket, boost::asio::buffer(user_cmd));
+    asio::write(socket, asio::buffer(user_cmd));
 }
 
 void Bot::join() const
@@ -66,7 +66,7 @@ void Bot::join() const
   for(const auto& c : channels)
   {
     std::string join_cmd = "JOIN #" + c + "\r\n";
-    boost::asio::write(socket, boost::asio::buffer(join_cmd));
+    asio::write(socket, asio::buffer(join_cmd));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 }
@@ -74,12 +74,12 @@ void Bot::join() const
 void Bot::quit() const
 {
   std::string quit_cmd = "QUIT :nidaros v0.1.0\r\n";
-  boost::asio::write(socket, boost::asio::buffer(quit_cmd));
+  asio::write(socket, asio::buffer(quit_cmd));
   socket.close();
 }
 
 // handles starting the bot
-void run(boost::asio::io_context& io_context)
+void run(asio::io_context& io_context)
 {
   Config config_file;
   auto config = config_file.get_config();
@@ -89,7 +89,7 @@ void run(boost::asio::io_context& io_context)
 
   // connect
   tcp::socket socket(io_context);
-  boost::asio::connect(socket, endpoints);
+  asio::connect(socket, endpoints);
 
   std::cout << "Connecting to " << config["host"] << " on port " << config["port"] << std::endl;
 

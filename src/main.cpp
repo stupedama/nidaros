@@ -1,5 +1,5 @@
 #include <iostream>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include "common.h"
 #include "bot.h"
 
@@ -12,7 +12,7 @@ int main()
 
   try {
 
-    boost::asio::io_context io_context;
+    asio::io_context io_context;
     run(io_context);
 
   } catch (const std::exception& e) {

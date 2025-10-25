@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <string>
 #include <thread>
 #include <chrono>
@@ -10,7 +10,7 @@
 #include "config.h"
 #include "common.h"
 
-using boost::asio::ip::tcp;
+using asio::ip::tcp;
 using namespace nidaros::common;
 using namespace nidaros::config;
 
@@ -43,7 +43,7 @@ private:
 };
 
 // running the program
-void run(boost::asio::io_context& io_context);
+void run(asio::io_context& io_context);
 
 } // namespace
 
