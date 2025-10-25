@@ -1,4 +1,5 @@
 #include "bot.h"
+#include "common.h"
 
 namespace nidaros::bot
 {
@@ -26,6 +27,8 @@ void Bot::run(std::atomic<bool>& connected) const
         line.pop_back();
       }
 
+      std::cout << line << std::endl;
+
       // respond to server to ping messages
       if(line.rfind("PING", 0) == 0)
       {
@@ -38,6 +41,18 @@ void Bot::run(std::atomic<bool>& connected) const
         connected = true;
       }
 
+      if(line.find(" 433 ") != std::string::npos) {
+        if(nickname.size() > NICKNAME_MAXCHARS) {
+          quit();
+          // give time to break out of loop
+          std::this_thread::sleep_for(std::chrono::seconds(2));
+          throw std::runtime_error("Nickname longer than allowed characters.");
+        } else {
+          nickname = nickname + "^";
+          set_nickname();
+        }
+      }
+
       if(line.find(" 403 ") != std::string::npos) {
         std::cerr << line << std::endl;
       }
@@ -46,6 +61,7 @@ void Bot::run(std::atomic<bool>& connected) const
     catch (const std::exception& e)
     {
       std::cerr << "IRC read loop ended: " << e.what() << '\n';
+      throw e;
     }
 }
 

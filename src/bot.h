@@ -36,7 +36,7 @@ private:
   void quit() const;
 private:
   tcp::socket& socket;
-  std::string nickname;
+  mutable std::string nickname;
   std::string ident;
   std::string name;
   common::channels_container channels;

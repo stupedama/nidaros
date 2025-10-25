@@ -13,6 +13,7 @@ using channels_container = std::vector<std::string>;
 
 // constants
 constexpr int CONFIG_SIZE{5};
+constexpr int NICKNAME_MAXCHARS{15};
 
 } // namespace
 
